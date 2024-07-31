@@ -187,46 +187,6 @@ class PresensiController extends Controller
         return view('presensi.gethistory', compact('history'));
     }
 
-    public function izin()
-    {
-        $nik = Auth::user()->nik;
-        $dataizin = DB::table('pengajuan_izin')->where('nik', $nik)->get();
-        return view('intern.absensi', compact('dataizin'));
-    }
-
-    public function buatizin()
-    {
-
-        return view('intern.absensi-form');
-    }
-
-    public function storeizin(Request $request)
-    {
-        $nik = Auth::user()->nik;
-        $date_izin = $request->date_izin;
-        $status = $request->status;
-        $keterangan = $request->keterangan;
-
-        // Menambahkan nilai default untuk kolom 'status_approved'
-        $status_approved = 0; // atau sesuai dengan kebutuhan Anda
-
-        $data = [
-            'nik' => $nik,
-            'date_izin' => $date_izin,
-            'status' => $status,
-            'keterangan' => $keterangan,
-            'status_approved' => $status_approved, // Menambahkan nilai untuk kolom 'status_approved'
-        ];
-
-        $save = DB::table('pengajuan_izin')->insert($data);
-
-        if ($save) {
-            return redirect('/presensi/izin')->with(['success' => 'Data Berhasil Disimpan']);
-        } else {
-            return redirect('/presensi/izin')->with(['error' => 'Data Gagal Disimpan']);
-        }
-    }
-
 
     public function monitoring()
     {

@@ -9,7 +9,7 @@ class OfficeSite extends Model
 {
     use HasFactory;
 
-    protected $table = "configuration_office";
+    protected $table = "office";
     protected $fillable = [
         'location_office',
         'radius'

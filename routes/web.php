@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ConfigureController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\internController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PresensiController;
-use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\PostDec;
 
@@ -22,21 +21,19 @@ use PhpParser\Node\Expr\PostDec;
 */
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/', [LoginController::class, 'index'])->name('login');
-    Route::post('/postlogin', [AuthController::class, 'postlogin'])->name('post-login');
-
-    Route::post('/postlogin-admin', [AuthController::class, 'postloginadmin'])->name('post-admin');
+    Route::get('/login', [AuthenticationController::class, 'index'])->name('login');
+    Route::post('/login/processing', [AuthenticationController::class, 'processLogin'])->name('post-login');
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware('userAccess:Admin')->group(function () {
-        Route::get('/dashboard-admin', [DashboardController::class, 'dashboardadmin']);
-        Route::get('/logout-admin', [LoginController::class, 'logout'])->name('logout-admin');
-        Route::get('/intern', [internController::class, 'index']);
-        Route::post('/intern/store', [internController::class, 'store']);
-        Route::get('/intern/{id}/edit', [internController::class, 'edit']);
-        Route::post('/intern/{id}', [internController::class, 'update'])->name('intern.update');
-        Route::get('/intern/{id}/delete', [internController::class, 'destroy']);
+        Route::get('/dashboard-admin', [DashboardController::class, 'dashboardadmin'])->name('admin.dashboard');
+        Route::get('/logout-admin', [AuthenticationController::class, 'logout'])->name('logout-admin');
+        Route::get('/intern', [UserController::class, 'index']);
+        Route::post('/intern/store', [UserController::class, 'store']);
+        Route::get('/intern/{id}/edit', [UserController::class, 'edit']);
+        Route::post('/intern/{id}', [UserController::class, 'update'])->name('intern.update');
+        Route::get('/intern/{id}/delete', [UserController::class, 'destroy']);
         Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
         Route::post('/getpresensi', [PresensiController::class, 'getpresensi']);
         Route::post('/showmap', [PresensiController::class, 'showmap']);
@@ -44,8 +41,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/presensi/cetaklaporan', [PresensiController::class, 'cetaklaporan']);
         Route::get('/presensi/rekap', [PresensiController::class, 'rekap']);
         Route::post('/presensi/cetakrekap', [PresensiController::class, 'cetakrekap']);
-        Route::get('/configure/officesite', [ConfigureController::class, 'index']);
-        Route::post('/configure/updatelocation', [ConfigureController::class, 'update']);
+
+        Route::get('/configure/officesite', [OfficeController::class, 'index']);
+        Route::post('/configure/updatelocation', [OfficeController::class, 'update']);
+
         Route::get('/presensi/izinsakit', [PresensiController::class, 'izinsakit']);
         Route::post('/presensi/approveizinsakit', [PresensiController::class, 'approveizinsakit']);
         Route::get('/presensi/{id}/batalizinsakit', [PresensiController::class, 'batalizinsakit']);
@@ -54,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware('userAccess:Intern')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'InternDashboard'])->name('intern.dashboard');
-        Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+        Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
 
         Route::get('/presensi/create', [PresensiController::class, 'index']);
@@ -67,8 +66,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/gethistory', [PresensiController::class, 'gethistory']);
 
 
-        Route::get('/presensi/izin', [PresensiController::class, 'izin']);
-        Route::get('/presensi/izin/form', [PresensiController::class, 'buatizin'])->name('intern.absensi-form');
-        Route::post('/presensi/izin/form/store', [PresensiController::class, 'storeizin'])->name('intern.absensi-form.store');
+        Route::get('/absensi', [AbsensiController::class, 'index'])->name('intern.absensi');
+        Route::get('/absensi/form', [AbsensiController::class, 'create'])->name('intern.absensi-form');
+        Route::post('/absensi/form/store', [AbsensiController::class, 'store'])->name('intern.absensi-form.store');
     });
 });

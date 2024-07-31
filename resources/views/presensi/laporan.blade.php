@@ -1,6 +1,5 @@
-@extends('layouts.admin.index')
+<x-admin-layout>
 @section('title','Laporan')
-@section('content')
 
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -81,5 +80,4 @@
         </div>
     </div>
 </div>
-
-@endsection
+</x-admin-layout>

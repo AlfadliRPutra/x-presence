@@ -26,7 +26,10 @@
                                 {{ Session::get('warning') }}
                             </div>
                             @endif
-                            <form                                action="/configure/updatelocation"                                method="POST"                            >
+                            <form
+                                action="/configure/updatelocation"
+                                method="POST"
+                            >
                                 @csrf
                                 <div class="row">
                                     <div class="col-12">

@@ -1,6 +1,5 @@
-@extends('layouts.admin.index')
+<x-admin-layout>
 @section('title','Data Absensi intern')
-@section('content')
 
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -110,7 +109,6 @@
     </div>
     </div>
 </div>
-@endsection
 
 @push('myscript')
     <script>
@@ -125,3 +123,4 @@
     </script>
 @endpush
     
+</x-admin-layout>

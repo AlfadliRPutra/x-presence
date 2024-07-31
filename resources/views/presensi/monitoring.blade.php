@@ -1,6 +1,6 @@
-@extends('layouts.admin.index')
+<x-admin-layout>
 @section('title','Monitoring Presensi intern')
-@section('content')
+
 
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -70,7 +70,6 @@
     </div>
     </div>
 </div>
-@endsection
 @push('myscript')
 <script>
     $(function () {
@@ -104,3 +103,4 @@
 </script>
     
 @endpush
+</x-admin-layout>
