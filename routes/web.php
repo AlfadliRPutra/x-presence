@@ -21,31 +21,35 @@ use PhpParser\Node\Expr\PostDec;
 */
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [AuthenticationController::class, 'index'])->name('login');
+    Route::get('/', [AuthenticationController::class, 'index'])->name('login');
     Route::post('/login/processing', [AuthenticationController::class, 'processLogin'])->name('post-login');
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware('userAccess:Admin')->group(function () {
         Route::get('/dashboard-admin', [DashboardController::class, 'dashboardadmin'])->name('admin.dashboard');
-        Route::get('/logout-admin', [AuthenticationController::class, 'logout'])->name('logout-admin');
-        Route::get('/intern', [UserController::class, 'index']);
+        Route::get('/logout-admin', [AuthenticationController::class, 'logout'])->name('admin.logout');
+
+        Route::get('/intern', [UserController::class, 'index'])->name('admin.intern');
         Route::post('/intern/store', [UserController::class, 'store']);
         Route::get('/intern/{id}/edit', [UserController::class, 'edit']);
         Route::post('/intern/{id}', [UserController::class, 'update'])->name('intern.update');
         Route::get('/intern/{id}/delete', [UserController::class, 'destroy']);
+
         Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
         Route::post('/getpresensi', [PresensiController::class, 'getpresensi']);
+
         Route::post('/showmap', [PresensiController::class, 'showmap']);
+
         Route::get('/presensi/laporan', [PresensiController::class, 'laporan']);
         Route::post('/presensi/cetaklaporan', [PresensiController::class, 'cetaklaporan']);
         Route::get('/presensi/rekap', [PresensiController::class, 'rekap']);
         Route::post('/presensi/cetakrekap', [PresensiController::class, 'cetakrekap']);
 
-        Route::get('/configure/officesite', [OfficeController::class, 'index']);
+        Route::get('/configure/officesite', [OfficeController::class, 'index'])->name('admin.office');
         Route::post('/configure/updatelocation', [OfficeController::class, 'update']);
 
-        Route::get('/presensi/izinsakit', [PresensiController::class, 'izinsakit']);
+        Route::get('/presensi/izinsakit', [PresensiController::class, 'izinsakit'])->name('admin.absensi');
         Route::post('/presensi/approveizinsakit', [PresensiController::class, 'approveizinsakit']);
         Route::get('/presensi/{id}/batalizinsakit', [PresensiController::class, 'batalizinsakit']);
         // Route::post('/configure/store',[ConfigureController::class,'store']);
