@@ -31,9 +31,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/logout-admin', [AuthenticationController::class, 'logout'])->name('admin.logout');
 
         Route::get('/intern', [UserController::class, 'index'])->name('admin.intern');
-        Route::post('/intern/store', [UserController::class, 'store']);
-        Route::get('/intern/{id}/edit', [UserController::class, 'edit']);
+        Route::post('/intern/store', [UserController::class, 'store'])->name('admin.intern.store');
+
+        Route::get('/intern/{id}/edit', [UserController::class, 'edit'])->name('admin.intern.edit');
         Route::post('/intern/{id}', [UserController::class, 'update'])->name('intern.update');
+
         Route::get('/intern/{id}/delete', [UserController::class, 'destroy']);
 
         Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);

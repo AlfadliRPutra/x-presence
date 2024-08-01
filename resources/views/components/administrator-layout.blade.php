@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>SIMAG</title>
-    <meta
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-      name="viewport"/>
-    <link
-      rel="icon"
-      href="img/favicon.ico"
-      type="image/x-icon"/>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 
     <!-- Fonts and icons -->
     <script src="{{ asset('js/plugin/webfont/webfont.min.js') }}"></script>
     <script>
-      WebFont.load({
-        google: { families: ["Public Sans:300,400,500,600,700"] },
-        custom: {
-          families: [
-            "Font Awesome 5 Solid",
-            "Font Awesome 5 Regular",
-            "Font Awesome 5 Brands",
-            "simple-line-icons",
-          ],
-          urls: ["{{ asset('css/fonts.min.css') }}"],
-        },
-        active: function () {
-          sessionStorage.fonts = true;
-        },
-      });
+        WebFont.load({
+            google: {
+                families: ["Public Sans:300,400,500,600,700"]
+            },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{{ asset('css/fonts.min.css') }}"],
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            },
+        });
     </script>
 
     <!-- CSS Files -->
@@ -36,30 +34,31 @@
     <link rel="stylesheet" href="{{ asset('css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/kaiadmin.min.css') }}" />
 
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="wrapper">
-      <!-- Sidebar -->
-      <x-administrator-sidebar></x-administrator-sidebar>
-      <!-- End Sidebar -->
+        <!-- Sidebar -->
+        <x-administrator-sidebar></x-administrator-sidebar>
+        <!-- End Sidebar -->
 
-      <div class="main-panel">
-        {{-- Navbar --}}
-        <x-administrator-navbar></x-administrator-navbar>
-        {{-- end navbar --}}
-        <div class="container">
+        <div class="main-panel">
+            {{-- Navbar --}}
+            <x-administrator-navbar></x-administrator-navbar>
+            {{-- end navbar --}}
+            <div class="container">
 
-          {{ $slot }}
+                {{ $slot }}
+
+            </div>
+
+            {{-- footer --}}
+            <x-administrator-footer></x-administrator-footer>
+            {{-- end footer --}}
 
         </div>
 
-        {{-- footer --}}
-        <x-administrator-footer></x-administrator-footer>
-        {{-- end footer --}}
-        
-      </div>
 
-      
     </div>
     <!--   Core JS Files   -->
     <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}"></script>
@@ -78,8 +77,7 @@
     <!-- Chart Circle -->
     <script src="{{ asset('js/plugin/chart-circle/circles.min.js') }}"></script>
 
-    <!-- Datatables -->
-    <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}"></script>
+
 
     <!-- Bootstrap Notify -->
     <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
@@ -94,54 +92,7 @@
     <!-- Kaiadmin JS -->
     <script src="{{ asset('js/kaiadmin.min.js') }}"></script>
 
-    <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}"></script>
+    @stack('scripts')
+</body>
 
-    <!-- Datatables -->
-    <script>
-      $(document).ready(function () {
-        $("#basic-datatables").DataTable({});
-
-        $("#multi-filter-select").DataTable({
-          pageLength: 5,
-          initComplete: function () {
-            this.api()
-              .columns()
-              .every(function () {
-                var column = this;
-                var select = $('<select class="form-select"><option value=""></option></select>')
-                  .appendTo($(column.footer()).empty())
-                  .on("change", function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                    column.search(val ? "^" + val + "$" : "", true, false).draw();
-                  });
-
-                column
-                  .data()
-                  .unique()
-                  .sort()
-                  .each(function (d, j) {
-                    select.append('<option value="' + d + '">' + d + "</option>");
-                  });
-              });
-          },
-        });
-
-        // Add Row
-        $("#add-row").DataTable({
-          pageLength: 5,
-        });
-
-        var action =
-          '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-        $("#addRowButton").click(function () {
-          $("#add-row")
-            .dataTable()
-            .fnAddData([$("#addName").val(), $("#addPosition").val(), $("#addOffice").val(), action]);
-          $("#addRowModal").modal("hide");
-        });
-      });
-    </script>
-  </body>
 </html>

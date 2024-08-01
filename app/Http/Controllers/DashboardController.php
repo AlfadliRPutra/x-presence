@@ -94,7 +94,7 @@ class DashboardController extends Controller
             ->where('date_izin', $today)
             ->where('status_approved', 1)
             ->first();
-        return view('admin.dashboard-admin', compact('rekapPresensi', 'rekapizin'));
+        return view('admin.dashboard',  compact('rekapPresensi', 'rekapizin'));
     }
 
     /**

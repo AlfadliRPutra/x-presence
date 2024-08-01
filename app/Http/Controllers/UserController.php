@@ -23,10 +23,10 @@ class UserController extends Controller
             $query->where('name', 'like', '%' . $name . '%');
         }
 
-        // Dapatkan hasil pencarian dengan paginasi
-        $intern = $query->paginate(5);
+        // Dapatkan hasil pencarian tanpa paginasi
+        $intern = $query->get(); // Ubah dari paginate(5) menjadi get()
 
-        return view('admin.index', compact('intern'));
+        return view('admin.data-master', compact('intern'));
     }
 
     /**
@@ -76,7 +76,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $intern = DB::table('users')->where('id', $id)->first();
-        return view('admin.edit', compact('intern'));
+        return view('admin.data-master-edit', compact('intern'));
     }
 
     /**
@@ -97,9 +97,9 @@ class UserController extends Controller
 
         $update = DB::table('users')->where('nik', $nik)->update($data);
         if ($update) {
-            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+            return Redirect::route('admin.intern')->with(['success' => 'Data Berhasil Di Update']);
         } else {
-            return Redirect::back()->with(['error' => 'Data Gagal Di Update']);
+            return Redirect::back()->withInput()->with(['error' => 'Data Gagal Di Update']);
         }
     }
 

@@ -44,7 +44,7 @@
           <li class="nav-item {{ request()->is('admin/intern') ? 'active' : 'inactive' }}">
             <a  href="{{ route('admin.intern') }}" class="collapsed" aria-expanded="false">
               <i class="fas fa-user-friends"></i>
-              <p>Peserta Magang</p>
+              <p>Data Master</p>
             </a>
           </li>
 
