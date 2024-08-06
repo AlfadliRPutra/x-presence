@@ -86,7 +86,7 @@
                                 <div class="numbers">
                                     <p class="card-category">Telat</p>
                                     <h4 class="card-title">
-                                        {{ $rekapPresensi->jmlterlambat != null ? $rekapizin->jmlterlambat : 0 }} </h4>
+                                        {{ $rekapPresensi->jmltelat != null ? $rekapPresensi->jmltelat : 0 }} </h4>
                                 </div>
                             </div>
                         </div>

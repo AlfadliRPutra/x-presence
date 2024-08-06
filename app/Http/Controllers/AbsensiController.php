@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class AbsensiController extends Controller
 {
@@ -14,8 +16,11 @@ class AbsensiController extends Controller
     public function index()
     {
         //
+        // Get the authenticated user's nik
         $nik = Auth::user()->nik;
-        $dataizin = DB::table('pengajuan_izin')->where('nik', $nik)->get();
+
+        // Retrieve records from the 'pengajuan_izin' table related to the authenticated user
+        $dataizin = User::find($nik)->pengajuanIzin()->get();
         return view('intern.absensi', compact('dataizin'));
     }
 
@@ -39,8 +44,7 @@ class AbsensiController extends Controller
         $status = $request->status;
         $keterangan = $request->keterangan;
 
-        // Menambahkan nilai default untuk kolom 'status_approved'
-        $status_approved = 0; // atau sesuai dengan kebutuhan Anda
+        $status_approved = 0;
 
         $data = [
             'nik' => $nik,
@@ -62,9 +66,14 @@ class AbsensiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
         //
+        $izinsakit = DB::table('pengajuan_izin')
+            ->join('users', 'pengajuan_izin.nik', '=', 'users.nik')
+            ->orderBy('date_izin', 'desc')
+            ->get();
+        return view('admin.absensi', compact('izinsakit'));
     }
 
     /**
@@ -78,9 +87,19 @@ class AbsensiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         //
+        $status_approved = $request->status_approved;
+        $id_izinsakit_form = $request->id_izinsakit_form;
+        $update = DB::table('pengajuan_izin')->where('id', $id_izinsakit_form)->update([
+            'status_approved' => $status_approved
+        ]);
+        if ($update) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+        }
     }
 
     /**
@@ -89,5 +108,18 @@ class AbsensiController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function batalIzin($id)
+    {
+        $update = DB::table('pengajuan_izin')->where('id', $id)->update([
+            'status_approved' => 0
+        ]);
+        if ($update) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+        }
     }
 }

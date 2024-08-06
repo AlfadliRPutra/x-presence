@@ -18,7 +18,7 @@ class OfficeController extends Controller
         $loc_office = OfficeSite::first();
 
         // Passing the data to the view
-        return view('admin.office-setting', compact('loc_office'));
+        return view('admin.office', compact('loc_office'));
     }
 
     /**
@@ -65,9 +65,13 @@ class OfficeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
         //
+        $loc_office = OfficeSite::first();
+
+        // Passing the data to the view
+        return view('admin.office-atur', compact('loc_office'));
     }
 
     /**

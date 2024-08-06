@@ -86,7 +86,7 @@ class DashboardController extends Controller
         $today = date("Y-m-d");
         $rekapPresensi = DB::table('presensi')
             ->selectRaw('COUNT(nik) as jmlhadir, 
-            SUM(IF((in_hour >= "07:01" AND in_hour <= "07:15") OR (in_hour >= "14:01" AND in_hour <= "14:15"), 1, 0)) as jmlterlambat')
+            SUM(IF((in_hour >= "07:01" AND in_hour <= "07:15") OR (in_hour >= "14:01" AND in_hour <= "14:15"), 1, 0)) as jmltelat')
             ->where('date_attendance', $today)
             ->first();
         $rekapizin = DB::table('pengajuan_izin')

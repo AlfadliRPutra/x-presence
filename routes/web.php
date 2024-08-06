@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InternProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PresensiController;
@@ -32,7 +33,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/intern', [UserController::class, 'index'])->name('admin.intern');
         Route::post('/intern/store', [UserController::class, 'store'])->name('admin.intern.store');
-
         Route::get('/intern/{id}/edit', [UserController::class, 'edit'])->name('admin.intern.edit');
         Route::post('/intern/{id}', [UserController::class, 'update'])->name('intern.update');
 
@@ -48,13 +48,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/presensi/rekap', [PresensiController::class, 'rekap']);
         Route::post('/presensi/cetakrekap', [PresensiController::class, 'cetakrekap']);
 
-        Route::get('/configure/officesite', [OfficeController::class, 'index'])->name('admin.office');
-        Route::post('/configure/updatelocation', [OfficeController::class, 'update']);
 
-        Route::get('/presensi/izinsakit', [PresensiController::class, 'izinsakit'])->name('admin.absensi');
-        Route::post('/presensi/approveizinsakit', [PresensiController::class, 'approveizinsakit']);
-        Route::get('/presensi/{id}/batalizinsakit', [PresensiController::class, 'batalizinsakit']);
-        // Route::post('/configure/store',[ConfigureController::class,'store']);
+        Route::get('/office', [OfficeController::class, 'index'])->name('admin.office');
+        Route::get('/office/setting', [OfficeController::class, 'edit'])->name('admin.office.setting');
+        Route::post('/office/setting/store', [OfficeController::class, 'update'])->name('admin.office.setting.store');
+
+
+        Route::get('/data/absensi', [AbsensiController::class, 'show'])->name('admin.absensi');
+        Route::post('/data/absensi/update', [AbsensiController::class, 'update'])->name('admin.absensi.update');
+        Route::get('/data/absensi/{id}/hapusizin', [AbsensiController::class, 'batalIzin'])->name('admin.absensi.batal');
     });
 
     Route::middleware('userAccess:Intern')->group(function () {
@@ -65,8 +67,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/presensi/create', [PresensiController::class, 'index']);
         Route::post('/presensi/store', [PresensiController::class, 'store']);
 
-        Route::get('/editprofile', [PresensiController::class, 'edit'])->name('profile')->name('intern.profile-edit');
-        Route::post('/presensi/{nik}/updateprofile', [PresensiController::class, 'update']);
+        Route::get('/editprofile', [InternProfileController::class, 'edit'])->name('profile')->name('intern.profile-edit');
+        Route::post('/presensi/{nik}/updateprofile', [InternProfileController::class, 'update']);
 
         Route::get('/presensi/history', [PresensiController::class, 'history']);
         Route::post('/gethistory', [PresensiController::class, 'gethistory']);

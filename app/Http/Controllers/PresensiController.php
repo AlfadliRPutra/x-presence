@@ -112,58 +112,7 @@ class PresensiController extends Controller
         return compact('meters');
     }
 
-    public function edit()
-    {
-        $nik = Auth::user()->nik;
-        $intern = DB::table('users')->where('nik', $nik)->first();
-        return view('intern.profil-edit', compact('intern'));
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
-    {
-        $nik = Auth::user()->nik;
-        $name = $request->name;
-        $email = $request->email;
-        $no_hp = $request->no_hp;
-        $password = Hash::make($request->password);
-        $intern = DB::table('users')->where('nik', $nik)->first();
-        if ($request->hasFile('foto')) {
-            $foto = $nik . "." . $request->file('foto')->getClientOriginalExtension();
-        } else {
-            $foto = $intern->foto;
-        }
-
-        if (empty($request->password)) {
-            $data = [
-                'name' => $name,
-                'email' => $email,
-                'no_hp' => $no_hp,
-                'foto' => $foto
-            ];
-        } else {
-            $data = [
-                'name' => $name,
-                'email' => $email,
-                'no_hp' => $no_hp,
-                'password' => $password,
-                'foto' => $foto
-            ];
-        }
-
-        $update = DB::table('users')->where('nik', $nik)->update($data);
-        if ($update) {
-            if ($request->hasFile('foto')) {
-                $folderPath = "public/uploads/intern/";
-                $request->file('foto')->storeAs($folderPath, $foto);
-            }
-            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
-        } else {
-            return Redirect::back()->with(['error' => 'Data Gagal Di Update']);
-        }
-    }
 
 
     public function history()
@@ -297,40 +246,5 @@ class PresensiController extends Controller
         }
 
         return view('presensi.cetakrekap', compact('bulan', 'tahun', 'namaBulan', 'rekap'));
-    }
-
-    public function izinsakit()
-    {
-        $izinsakit = DB::table('pengajuan_izin')
-            ->join('users', 'pengajuan_izin.nik', '=', 'users.nik')
-            ->orderBy('date_izin', 'desc')
-            ->get();
-        return view('presensi.izinsakit', compact('izinsakit'));
-    }
-
-    public function approveizinsakit(Request $request)
-    {
-        $status_approved = $request->status_approved;
-        $id_izinsakit_form = $request->id_izinsakit_form;
-        $update = DB::table('pengajuan_izin')->where('id', $id_izinsakit_form)->update([
-            'status_approved' => $status_approved
-        ]);
-        if ($update) {
-            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
-        }
-    }
-
-    public function batalizinsakit($id)
-    {
-        $update = DB::table('pengajuan_izin')->where('id', $id)->update([
-            'status_approved' => 0
-        ]);
-        if ($update) {
-            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
-        }
     }
 }
