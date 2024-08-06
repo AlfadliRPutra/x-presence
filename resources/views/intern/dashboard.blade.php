@@ -135,7 +135,7 @@
         </div>
 
         <div id="rekappresensi">
-            <h2>Rekap Presensi Bulan {{ $nameMonth[$thisMonth] }} Tahun {{ $thisYear }}</h2>
+            <h3>Rekap Presensi Bulan {{ $nameMonth[$thisMonth] }} Tahun {{ $thisYear }}</h3>
             <div class="row">
                 <div class="col-3">
                     <div class="card">
@@ -192,7 +192,7 @@
         </div>
 
         <div class="presencetab mt-2">
-            <h2>History Presensi</h2>
+            <h3>History Presensi</h3>
             <div class="tab-pane fade show active" id="pilled" role="tabpanel">
                 <ul class="nav nav-tabs style1" role="tablist">
                     <li class="nav-item">
